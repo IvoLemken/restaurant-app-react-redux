@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { selectToken } from "../store/user/selectors"
+import { selectToken, selectUser } from "../store/user/selectors"
 import { logOut } from "../store/user/slice"
 import { Link } from "react-router-dom"
 
@@ -12,11 +12,12 @@ export const Navigation = () => {
   const dispatch = useDispatch()
 
   const token = useSelector(selectToken)
+  const user = useSelector(selectUser)
 
   return(
     <Nav>
       <Logo href="/">
-        Codaisseur<span>templates</span>
+        Resto<span>reservations</span>
       </Logo>
       <Hamburger onClick={() => setOpen(!open)}>
         <span/>
@@ -24,8 +25,14 @@ export const Navigation = () => {
         <span/>
       </Hamburger>
       <Menu open={open}>
-        <MenuLink to="/empty1">Empty 1</MenuLink>
-        <MenuLink to="/empty2">Empty 2</MenuLink>
+        {token && user.isAdmin
+          ? <MenuLink to="/admin/reservations">View Reservations</MenuLink>
+          : ""
+        }
+        {token && user.isAdmin
+          ? <MenuLink to="/admin/users">Manage Users</MenuLink>
+          : ""
+        }
         {token 
           ? <button onClick={() => dispatch(logOut())}>Logout</button> 
           : <MenuLink to="/login">Login</MenuLink>}
