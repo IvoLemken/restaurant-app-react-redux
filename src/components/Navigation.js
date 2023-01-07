@@ -25,11 +25,11 @@ export const Navigation = () => {
         <span/>
       </Hamburger>
       <Menu open={open}>
-        {token && user.isAdmin
+        {token && user && user.isAdmin
           ? <MenuLink to="/admin/reservations">View Reservations</MenuLink>
           : ""
         }
-        {token && user.isAdmin
+        {token && user && user.isAdmin
           ? <MenuLink to="/admin/users">Manage Users</MenuLink>
           : ""
         }
