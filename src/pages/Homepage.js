@@ -1,26 +1,76 @@
-import { Title } from "../styled"
+import { Button, Input, Title, LinkWord } from "../styled"
 import { Link } from "react-router-dom"
-import { LinkWord } from "../styled"
 import styled from "styled-components"
+import { useEffect, useState } from "react"
+import TablesDisplay from "../components/TablesDisplay"
+import { useDispatch, useSelector } from "react-redux"
+import { selectTables, selectReservedTables } from "../store/tables/selectors"
+import { loadTables } from "../store/tables/thunks"
+import { loadReservations } from "../store/tables/thunks"
+
+const LOCAL_STORAGE_DATE_KEY = 'restaurant-app'
+
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
+
+function formatDate(date = new Date()) {
+  return [
+    date.getFullYear(),
+    padTo2Digits(date.getMonth() + 1),
+    padTo2Digits(date.getDate()),
+  ].join('-');
+}
 
 export const Homepage = () => {
+  const [reservationDate, setDate] = useState("")
+  
+  const reservedTables = useSelector(selectReservedTables);
+  const tables = useSelector(selectTables);
+
+  useEffect(() => {
+    const storedDate = localStorage.getItem(LOCAL_STORAGE_DATE_KEY)
+    if (storedDate) setDate(storedDate); else setDate(formatDate());
+  }, [])  
+
+  const dispatch = useDispatch()
+  
+  dispatch(loadTables());
+
+  useEffect(() => {
+    if (reservationDate !== "") {
+      localStorage.setItem(LOCAL_STORAGE_DATE_KEY, reservationDate)
+      dispatch(loadReservations(reservationDate));
+    }
+  }, [reservationDate])
 
   return (
-    <Container>
-     <h3>Hello there 👋</h3>
-     <p>General information:</p>
-     <ul>
-      <li>Go to your backend and modify the config url</li>
-      <li>Make sure you clicked on the <b>use template</b> button on github</li>
-      <li>This template is using <a style={LinkWord} target="_blank" href="https://styled-components.com/">styled components</a>, you don't have to use it</li>
-      <li>You don't have to follow the folder structure, feel free to adapt to your own</li>
-      <li>Login and SignUp are already implemented</li>
-      <li>Modify this page to create your own homeepage</li>
-     </ul>
-    </Container>
+    <div style={{textAlign: "center"}}>
+      <Container>
+        <Title>Make a reservation</Title>
+        
+        <Input 
+          type="date"
+          name="reservationDate"
+          value={reservationDate}
+          min={formatDate()}
+          onChange={(e) => {
+            setDate(e.target.value)
+          }}
+        />
+        
+        <br/>
+        <br/>
+        <br/>
+        <TablesDisplay tables={tables} reservedTables={reservedTables}/>
+
+      </Container>
+    </div>
   )
 }
 
 const Container = styled.div`
-  margin: 20px
+  display: 'flex';
+  flex-direction: 'column';
+  margin: 15%;
 `

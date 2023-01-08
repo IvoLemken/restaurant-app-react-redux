@@ -48,13 +48,13 @@ export const loadReservations = (date) => {
         "reservationDate": date
       });
       
-      const reservations = [];
+      const tables = [];
 
       response.data.reservedTables.forEach(res => {
-        reservations.push(res.tableId)
+        tables.push(res.tableId)
       });
 
-      dispatch(reservedTables({ reserved: reservations }));
+      dispatch(reservedTables({ reserved: {"tables": tables, "date": date}}));
       dispatch(appDoneLoading());
 
     } catch (error) {

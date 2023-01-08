@@ -1,3 +1,5 @@
 export * from "./Login"
 export * from "./SignUp"
 export * from "./Homepage"
+export * from "./admin/Reservations"
+export * from "./admin/Users"

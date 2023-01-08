@@ -1,10 +1,12 @@
 import styled from "styled-components"
-import { Button, Input, Title, LinkWord } from "../../styled"
+import { Button, Title } from "../../styled"
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { selectToken, selectUser } from "../../store/user/selectors"
+import { loadReservations } from "../../store/reservation/thunks"
+import { selectReservations } from "../../store/reservation/selectors"
 
 export const Reservations = () => {
 
@@ -15,18 +17,39 @@ export const Reservations = () => {
   const user = useSelector(selectUser)
 
   useEffect(() => {
-    if (token == null || user == null) {
+    if (token == null) {
       navigate("/");
     }
-    // if (user.isAdmin !== true) {
-    //   navigate("/");
-    // }
+    if (user == null) {
+      navigate("/");
+    }
+    if (user !== null && user.isAdmin !== true) {
+      navigate("/");
+    }
   }, [token, user, navigate]);
+
+  useEffect(() => {
+    //Runs only on the first render
+    dispatch(loadReservations());
+  }, []);
+
+  const reservations = useSelector(selectReservations)
+
+  const showReservations = () => {
+    const result = []
+    if (reservations && reservations.reservedTables) {
+      reservations.reservedTables.forEach((e) => {
+        result.push(`${e.id} | ${e.date} | ${e.tableId} | ${e.user.name} \n\n`)
+      });
+    }
+    return result
+  }
 
   return (
     <div style={{textAlign: "center"}}>
       <Container>
         <Title>Reservations</Title>
+        {showReservations()}
       </Container>
     </div>
   )

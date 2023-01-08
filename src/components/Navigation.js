@@ -26,11 +26,10 @@ export const Navigation = () => {
       </Hamburger>
       <Menu open={open}>
         {token && user && user.isAdmin
-          ? <MenuLink to="/admin/reservations">View Reservations</MenuLink>
-          : ""
-        }
-        {token && user && user.isAdmin
-          ? <MenuLink to="/admin/users">Manage Users</MenuLink>
+          ? <>
+              <MenuLink to="/admin/reservations">View Reservations</MenuLink>
+              <MenuLink to="/admin/users">Manage Users</MenuLink>
+            </>
           : ""
         }
         {token 
