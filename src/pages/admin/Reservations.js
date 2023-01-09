@@ -1,6 +1,5 @@
 import styled from "styled-components"
-import { Button, Title } from "../../styled"
-import { Link } from "react-router-dom"
+import { Title } from "../../styled"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -34,7 +33,7 @@ export const Reservations = () => {
   useEffect(() => {
     //Runs only on the first render
     dispatch(loadAllReservations());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
@@ -50,10 +49,3 @@ const Container = styled.div`
   content-align: center
   margin: 15%;
 `
-
-const SubText = styled.p`
-  text-align: left;
-  color: #1E3163;
-  padding: 20px 0px 5px 0px;
-`;
-

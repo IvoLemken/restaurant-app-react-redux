@@ -1,7 +1,6 @@
 import styled from "styled-components"
-import { Button, Input, Title, LinkWord } from "../../styled"
-import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { Title } from "../../styled"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { selectToken, selectUser } from "../../store/user/selectors"
@@ -34,7 +33,7 @@ export const Users = () => {
   useEffect(() => {
     //Runs only on the first render
     dispatch(loadAllUsers());
-  }, [])
+  }, [dispatch])
   
 
   return (
@@ -51,10 +50,3 @@ const Container = styled.div`
   content-align: center
   margin: 15%;
 `
-
-const SubText = styled.p`
-  text-align: center;
-  color: #1E3163;
-  padding: 20px 0px 5px 0px;
-`;
-
