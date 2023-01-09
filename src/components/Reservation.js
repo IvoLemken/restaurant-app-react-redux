@@ -1,13 +1,14 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import styled from "styled-components";
+import { cancelReservation } from '../store/reservation/thunks';
 
 export default function Reservation({ id, date, tableId, email, name }) {
     const dispatch = useDispatch();
 
     const clickCancel = (e) => {
         e.preventDefault()
-        console.log(id)
+        dispatch(cancelReservation(id))
     }
 
     return (

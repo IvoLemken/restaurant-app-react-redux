@@ -51,8 +51,7 @@ export const Reservations = () => {
 }
 
 const Container = styled.div`
-  display: 'flex';
-  flex-direction: 'column';
+  content-align: center
   margin: 15%;
 `
 
