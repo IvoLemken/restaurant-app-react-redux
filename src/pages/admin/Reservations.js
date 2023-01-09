@@ -36,10 +36,6 @@ export const Reservations = () => {
     dispatch(loadAllReservations());
   }, []);
 
-  //TODO
-  // - Make a reservation component
-  // - cancel button  
-
   return (
     <div>
       <Container>

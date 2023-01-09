@@ -5,6 +5,9 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { selectToken, selectUser } from "../../store/user/selectors"
+import { selectUserList } from "../../store/userList/selectors"
+import { loadAllUsers } from "../../store/userList/thunks"
+import UsersOverview from "../../components/UsersOverview"
 
 export const Users = () => {
 
@@ -15,26 +18,37 @@ export const Users = () => {
   const user = useSelector(selectUser)
 
   useEffect(() => {
-    if (token == null || user == null) {
+    if (token == null) {
       navigate("/");
     }
-    // if (user.isAdmin !== true) {
-    //   navigate("/");
-    // }
+    if (user == null) {
+      navigate("/");
+    }
+    if (user !== null && user.isAdmin !== true) {
+      navigate("/");
+    }
   }, [token, user, navigate]);
+
+  const userList = useSelector(selectUserList)
+
+  useEffect(() => {
+    //Runs only on the first render
+    dispatch(loadAllUsers());
+  }, [])
+  
 
   return (
     <div style={{textAlign: "center"}}>
       <Container>
         <Title>Users</Title>
+        <UsersOverview userList={userList}></UsersOverview>
       </Container>
     </div>
   )
 }
 
 const Container = styled.div`
-  display: 'flex';
-  flex-direction: 'column';
+  content-align: center
   margin: 15%;
 `
 
