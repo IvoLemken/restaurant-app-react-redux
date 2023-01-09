@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { selectToken, selectUser } from "../../store/user/selectors"
-import { loadReservations } from "../../store/reservation/thunks"
+import { loadAllReservations } from "../../store/reservation/thunks"
 import { selectReservations } from "../../store/reservation/selectors"
 
 export const Reservations = () => {
@@ -30,7 +30,7 @@ export const Reservations = () => {
 
   useEffect(() => {
     //Runs only on the first render
-    dispatch(loadReservations());
+    dispatch(loadAllReservations());
   }, []);
 
   const reservations = useSelector(selectReservations)

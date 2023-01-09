@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { selectToken } from "../store/user/selectors"
 import { Link } from 'react-router-dom'
 import { LinkWord } from '../styled'
+import { makeReservation } from '../store/reservation/thunks'
 
-const reservationButton = (token) => {
-    if (token !== null) {
-      return ("A button to reserve this table")
+export default function SingleTableDisplay({ id, seats, reserved, date }) {
+    const dispatch = useDispatch();
+
+    const reserveTable = (e) => {
+        e.preventDefault()
+        dispatch(makeReservation(date,id));
     }
-    return (<Link to="/login" style={LinkWord}>Login to reserve</Link>)
-  }
 
-export default function SingleTableDisplay({ id, seats, reserved }) {
+    const reservationButton = (token) => {
+        if (token !== null) {
+          return (<button onClick={reserveTable}>Reserve Table</button>)
+        }
+        return (<Link to="/login" style={LinkWord}>Login to reserve</Link>)
+    }
     const token = useSelector(selectToken);
     const [resButton, setResButton] = useState(reservationButton(token))
     const [color, setColor] = useState("rgb(0,255,0)")
@@ -26,10 +33,6 @@ export default function SingleTableDisplay({ id, seats, reserved }) {
             setResButton(reservationButton(token));
         }
     }, [reserved])
-    
-    
-    console.log(`rendering table ${id} ${reserved}`)
-    console.log(color)
 
     return (
         <div style={{backgroundColor: color, padding: '1em', margin: '1em'}}>Table {id}<br/>{seats} seats<br/><br/>{resButton}</div>

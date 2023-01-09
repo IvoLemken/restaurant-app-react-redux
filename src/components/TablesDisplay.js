@@ -8,9 +8,9 @@ export default function TablesDisplay({ tables, reservedTables }) {
             {
                 tables.map(table => {
                     if (reservedTables.tables.find((e) => e === table.id)) {
-                        return <SingleTableDisplay key={table.id} id={table.id} seats={table.seats} reserved={true} />
+                        return <SingleTableDisplay key={table.id} id={table.id} seats={table.seats} reserved={true} date={reservedTables.date}/>
                     }
-                    return <SingleTableDisplay key={table.id} id={table.id} seats={table.seats} reserved={false} />
+                    return <SingleTableDisplay key={table.id} id={table.id} seats={table.seats} reserved={false} date={reservedTables.date} />
                 })
             }
         </div>
