@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { selectToken, selectUser } from "../../store/user/selectors"
 import { loadAllReservations } from "../../store/reservation/thunks"
 import { selectReservations } from "../../store/reservation/selectors"
+import ReservationsOverview from "../../components/ReservationsOverview"
 
 export const Reservations = () => {
 
@@ -28,28 +29,22 @@ export const Reservations = () => {
     }
   }, [token, user, navigate]);
 
+  const reservations = useSelector(selectReservations)
+
   useEffect(() => {
     //Runs only on the first render
     dispatch(loadAllReservations());
   }, []);
 
-  const reservations = useSelector(selectReservations)
-
-  const showReservations = () => {
-    const result = []
-    if (reservations && reservations.reservedTables) {
-      reservations.reservedTables.forEach((e) => {
-        result.push(`${e.id} | ${e.date} | ${e.tableId} | ${e.user.name} \n\n`)
-      });
-    }
-    return result
-  }
+  //TODO
+  // - Make a reservation component
+  // - cancel button  
 
   return (
-    <div style={{textAlign: "center"}}>
+    <div>
       <Container>
         <Title>Reservations</Title>
-        {showReservations()}
+        <ReservationsOverview reservations={reservations}></ReservationsOverview>
       </Container>
     </div>
   )
@@ -62,7 +57,7 @@ const Container = styled.div`
 `
 
 const SubText = styled.p`
-  text-align: center;
+  text-align: left;
   color: #1E3163;
   padding: 20px 0px 5px 0px;
 `;
